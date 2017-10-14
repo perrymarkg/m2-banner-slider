@@ -28,6 +28,15 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 class InstallData implements InstallDataInterface
 {
 
+    private $bannerFactory;
+
+    private $slidesFactory;
+
+    public function __construct(\Prymag\BannerSlider\Model\BannersFactory $bannersFactory, \Prymag\BannerSlider\Model\SlidesFactory $slidesFactory){
+        $this->bannersFactory = $bannersFactory;
+        $this->slidesFactory = $slidesFactory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,5 +45,37 @@ class InstallData implements InstallDataInterface
         ModuleContextInterface $context
     ) {
         //Your install script
+        $banners = array(
+            array(
+                'title' => 'Sample Banner 1'
+            ),
+            array(
+                'title' => 'Sample Banner 2'
+            )
+        );
+
+        $slides = array(
+            array(
+                'title' => 'Banner One',
+                'content' => 'Lorem Ipsum',
+            ),
+            array(
+                'title' => 'Banner Two',
+                'content' => 'Lorem Ipsums',
+            )
+        );
+        
+        foreach($banners as $k => $b){
+            $banner_id = $this->createBanner()->setData($b)->save()->getId();
+            $this->createSlides()->setData( $slides[$k] )->save();
+        }
+    }
+
+    public function createBanner(){
+        return $this->bannersFactory->create();
+    }
+
+    public function createSlides(){
+        return $this->slidesFactory->create();
     }
 }

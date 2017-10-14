@@ -24,6 +24,7 @@ namespace Prymag\BannerSlider\Setup;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\DB\Ddl\Table;
 
 class InstallSchema implements InstallSchemaInterface
 {
@@ -37,6 +38,54 @@ class InstallSchema implements InstallSchemaInterface
     ) {
         $installer = $setup;
         $installer->startSetup();
+
+        $bannersTable = $installer->getTable('prymag_banners');
+        $bannerSlidesTable = $installer->getTable('prymag_slides');
+
+        if ($installer->getConnection()->isTableExists($bannersTable) != true) {
+            $table = $installer->getConnection()
+            ->newTable($installer->getTable($bannersTable))
+            ->addColumn(
+                'banner_id',
+                Table::TYPE_INTEGER,
+                null,
+                ['identity' => true, 'nullable' => false, 'primary' => true],
+                'Banner ID'
+            )
+            ->addColumn('title', Table::TYPE_TEXT, 100, ['nullable' => true, 'default' => null])
+            ->addColumn('options', Table::TYPE_TEXT, 255, ['nullable' => true], 'Banner Options')
+            ->addColumn('created_at', Table::TYPE_DATETIME, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Creation Time')
+            ->addColumn('updated_at', Table::TYPE_DATETIME, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE], 'Update Time')            
+            ->setComment('Prymag/Banners Table');
+
+            $installer->getConnection()->createTable($table);   
+        }
+
+
+        if ($installer->getConnection()->isTableExists($bannerSlidesTable) != true) {
+            $table = $installer->getConnection()
+            ->newTable($installer->getTable($bannerSlidesTable))
+            ->addColumn(
+                'slide_id',
+                Table::TYPE_INTEGER,
+                null,
+                ['identity' => true, 'nullable' => false, 'primary' => true],
+                'Slide ID'
+            )
+            ->addColumn('title', Table::TYPE_TEXT, 100, ['nullable' => true, 'default' => null])
+            ->addColumn('content', Table::TYPE_TEXT, null, ['nullable' => true], 'Slide Content')
+            ->addColumn('image', Table::TYPE_TEXT, 512, ['nullable' => true])
+            ->addColumn('button_title', Table::TYPE_TEXT, 256, ['nullable' => true])
+            ->addColumn('button_url', Table::TYPE_TEXT, 512, ['nullable' => true])
+            ->addColumn('is_active', Table::TYPE_TEXT, 512, ['nullable' => true])
+            ->addColumn('order', Table::TYPE_TEXT, 512, ['nullable' => true])
+            ->addColumn('created_at', Table::TYPE_DATETIME, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Creation Time')
+            ->addColumn('updated_at', Table::TYPE_DATETIME, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE], 'Update Time')            
+            ->setComment('Prymag/Slides Table');
+
+            $installer->getConnection()->createTable($table);
+            
+        }
 
         $setup->endSetup();
     }

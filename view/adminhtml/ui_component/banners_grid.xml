@@ -54,6 +54,20 @@
     
     <!-- Define the actual columns for the table data -->
     <columns name="prymag_slider_columns">
+        <!-- Dropdown selection -->
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">55</item>
+                    <item name="indexField" xsi:type="string">banner_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <!-- 
+        The name attribute should correspond to the column name of the database table 
+        see prymag_banners database table
+        -->
         <column name="banner_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -70,7 +84,36 @@
                 </item>
             </argument>
         </column>
-        
-        
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Created</item>
+                </item>
+            </argument>
+        </column>
+        <column name="updated_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Updated</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="actions" class="Prymag\BannerSlider\Ui\Component\Listing\Column\BannerActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">107</item>
+                    <item name="indexField" xsi:type="string">banner_id</item>
+                </item>
+            </argument>
+        </actionsColumn>
+
+
     </columns>
 </listing>

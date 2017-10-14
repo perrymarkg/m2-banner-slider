@@ -43,6 +43,9 @@ class InstallSchema implements InstallSchemaInterface
         $bannerSlidesTable = $installer->getTable('prymag_slides');
 
         if ($installer->getConnection()->isTableExists($bannersTable) != true) {
+            /**
+             * use Table::TYPE_TIMESTAMP for date/time formats instead of Table::TYPE_DATETIME in order to properly render them in a grid table
+             */
             $table = $installer->getConnection()
             ->newTable($installer->getTable($bannersTable))
             ->addColumn(
@@ -54,8 +57,8 @@ class InstallSchema implements InstallSchemaInterface
             )
             ->addColumn('title', Table::TYPE_TEXT, 100, ['nullable' => true, 'default' => null])
             ->addColumn('options', Table::TYPE_TEXT, 255, ['nullable' => true], 'Banner Options')
-            ->addColumn('created_at', Table::TYPE_DATETIME, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Creation Time')
-            ->addColumn('updated_at', Table::TYPE_DATETIME, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE], 'Update Time')            
+            ->addColumn('created_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Creation Time')
+            ->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE], 'Update Time')            
             ->setComment('Prymag/Banners Table');
 
             $installer->getConnection()->createTable($table);   
@@ -79,8 +82,8 @@ class InstallSchema implements InstallSchemaInterface
             ->addColumn('button_url', Table::TYPE_TEXT, 512, ['nullable' => true])
             ->addColumn('is_active', Table::TYPE_TEXT, 512, ['nullable' => true])
             ->addColumn('order', Table::TYPE_TEXT, 512, ['nullable' => true])
-            ->addColumn('created_at', Table::TYPE_DATETIME, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Creation Time')
-            ->addColumn('updated_at', Table::TYPE_DATETIME, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE], 'Update Time')            
+            ->addColumn('created_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Creation Time')
+            ->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE], 'Update Time')            
             ->setComment('Prymag/Slides Table');
 
             $installer->getConnection()->createTable($table);

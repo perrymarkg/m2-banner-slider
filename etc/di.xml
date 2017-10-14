@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+               <item name="banners_data_source" xsi:type="string">Prymag\BannerSlider\Model\ResourceModel\Banners\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Prymag\BannerSlider\Model\ResourceModel\Banners\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">prymag_banners</argument>
+            <argument name="eventPrefix" xsi:type="string">banner_slider_grid</argument>
+            <argument name="eventObject" xsi:type="string">banner_sliders_grid</argument>
+            <argument name="resourceModel" xsi:type="string">Prymag\BannerSlider\Model\ResourceModel\Banners</argument>
+        </arguments>
+    </type>
+    <!-- 
+    attribute "name" should be the value of the dataprovider "class" attribute from the ui component
+    see view/adminhtml/layout/banners_grid.xml
+    -->
+    <virtualType name="BannerGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Prymag\BannerSlider\Model\ResourceModel\Banners\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">BannerGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="BannerGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+</config>

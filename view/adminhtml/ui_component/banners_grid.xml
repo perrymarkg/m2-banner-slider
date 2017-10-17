@@ -17,7 +17,7 @@
             <item name="provider" xsi:type="string">banners_grid.banners_data_source</item>
             <item name="deps" xsi:type="string">banners_grid.banners_data_source</item>
         </item>
-        <item name="spinner" xsi:type="string">prymag_slider_columns</item>
+        <item name="spinner" xsi:type="string">prymag_banner_columns</item>
         <item name="buttons" xsi:type="array">
             <item name="add" xsi:type="array">
                 <item name="name" xsi:type="string">add</item>
@@ -53,7 +53,7 @@
     </dataSource>
     
     <!-- Define the actual columns for the table data -->
-    <columns name="prymag_slider_columns">
+    <columns name="prymag_banner_columns">
         <!-- Dropdown selection -->
         <selectionsColumn name="ids">
             <argument name="data" xsi:type="array">

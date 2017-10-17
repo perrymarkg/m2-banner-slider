@@ -3,41 +3,57 @@
 namespace Prymag\BannerSlider\Ui\DataProvider;
 
 use Prymag\BannerSlider\Model\ResourceModel\Banners\CollectionFactory;
-
+use \Magento\Ui\DataProvider\Modifier\PoolInterface;
 
 class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
+
+    private $pool;
+    
     public function __construct(
         $name,
         $primaryFieldName,
         $requestFieldName,
         CollectionFactory $bannersCollectionFactory,
+        PoolInterface $pool,
         array $meta = [],
         array $data = []
     ) {
         $this->collection = $bannersCollectionFactory->create();
+        $this->pool = $pool; // This will be injected via etc/adminhtml/di.xml
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
+        
     }
 
+    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getData()
     {
-        if (isset($this->loadedData)) {
-            return $this->loadedData;
+        /** @var ModifierInterface $modifier */
+        foreach ($this->pool->getModifiersInstances() as $modifier) {
+            $this->data = $modifier->modifyData($this->data);
         }
-
-        $items = $this->collection->getItems();
-        $this->loadedData = array();
-
-        foreach ($items as $banners) {
-            /** 
-             * banner_details - this should contain the same fieldset name that will be using this dataprovider 
-             * allows mapping the data automatically
-             * see view/adminhtml/ui_component/banners_form.xml dataSource
-             * */
-            $this->loadedData[$contact->getId()]['banner_details'] = $banners->getData();
-        }
-
-
-        return $this->loadedData;
-
+        return $this->data;
     }
+
+    /**
+     * Be sure to implement this fuction in order to trigger the AddSlides modifier
+     * see Prymag\BannerSlier\Ui\DataProvider\Banners\Form\Modifiers\AddSlides.php
+     *
+     * @return void
+     */
+    public function getMeta()
+    {
+        $meta = parent::getMeta();
+
+        /** @var ModifierInterface $modifier */
+        foreach ($this->pool->getModifiersInstances() as $modifier) {
+            $meta = $modifier->modifyMeta($meta);
+        }
+
+        return $meta;
+    }
+
 }

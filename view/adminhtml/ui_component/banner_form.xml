@@ -6,7 +6,6 @@
             <item name="deps" xsi:type="string">banner_form.banner_form_data_source</item>
             <item name="namespace" xsi:type="string">product_form</item>
         </item>
-        <item name="label" xsi:type="string" translate="true">Employee Information</item>
         <item name="config" xsi:type="array">
             <item name="dataScope" xsi:type="string">data</item>
             <item name="namespace" xsi:type="string">banner_form</item>

@@ -14,5 +14,12 @@
              action="prymag_bannerslider/banners"
              parent="Prymag_BannerSlider::top_level"
              resource="Magento_Backend::content" />
+        <add id="Prymag_BannerSlider::level_2"
+             title="Slides"
+             module="Prymag_BannerSlider"
+             sortOrder="20"
+             action="prymag_bannerslider/slides"
+             parent="Prymag_BannerSlider::top_level"
+             resource="Magento_Backend::content" />
     </menu>
 </config>

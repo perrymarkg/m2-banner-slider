@@ -24,8 +24,6 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
         
     }
 
-    
-
     /**
      * {@inheritdoc}
      */

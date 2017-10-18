@@ -80,8 +80,7 @@ class InstallSchema implements InstallSchemaInterface
             ->addColumn('image', Table::TYPE_TEXT, 512, ['nullable' => true])
             ->addColumn('button_title', Table::TYPE_TEXT, 256, ['nullable' => true])
             ->addColumn('button_url', Table::TYPE_TEXT, 512, ['nullable' => true])
-            ->addColumn('is_active', Table::TYPE_TEXT, 512, ['nullable' => true])
-            ->addColumn('order', Table::TYPE_TEXT, 512, ['nullable' => true])
+            ->addColumn('is_active', Table::TYPE_BOOLEAN, null, ['nullable' => true])
             ->addColumn('created_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT], 'Creation Time')
             ->addColumn('updated_at', Table::TYPE_TIMESTAMP, null, ['nullable' => false, 'default' => Table::TIMESTAMP_INIT_UPDATE], 'Update Time')            
             ->setComment('Prymag/Slides Table');

@@ -46,14 +46,15 @@ class Save extends \Magento\Backend\App\Action {
              */
             $model = $this->_objectManager->create('Prymag\BannerSlider\Model\Slides')->load($id);
             if (!$model->getSlideId() && $id) {
-                $this->messageManager->addError(__('This slider no longer exists.'));
+                $this->messageManager->addError(__('This slide no longer exists.'));
                 return $resultRedirect->setPath('*/*/');
             }
             
             // move the file from tmp dir to main bannerslider dir
             if( isset($data['image']) && is_array($data['image'])){
                 $data['image'] = $this->processImage($data['image']);
-                // Maybe add process to delete unused images in the future.
+                // Maybe add a process to delete unused images in the future. m2 doesn't seem to do this at the moment.
+                // for reference: in admin go to category, add featured image to any category. check pub/media/catalog/category. - images remain here even if changed in admin.
             }
                 
             

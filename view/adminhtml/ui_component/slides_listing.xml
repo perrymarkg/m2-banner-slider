@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+ this is the listing uiComponent that is used to add slides and it seems to work fine even without a controller.
+ created this separate file instead of using slides_grid.xml to remove the actions column.
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <!-- 
+            value for "provider" and "deps" should follow {filename}.{data_sourcename}
+            where {filename} is the name for this file.
+            not doing so will result in empty grid list. 
+            -->
+            <item name="provider" xsi:type="string">slides_listing.slide_data_source</item>
+            <item name="deps" xsi:type="string">slides_listing.slide_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">prymag_slide_columns</item>        
+    </argument>
+
+    <dataSource name="slide_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <!-- 
+            class value should be a class or a name that extends Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
+            this value will be injected via di.xml using virtualType, see the di.xml
+            see module-cms for sample of using a custom dataProvider
+            -->
+            <argument name="class" xsi:type="string">SlideGridDataProvider</argument>
+            <argument name="name" xsi:type="string">slide_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">slide_id</argument>
+            <argument name="requestFieldName" xsi:type="string">slide_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    
+    <!-- Define the actual columns for the table data -->
+    <columns name="prymag_slide_columns">
+        <!-- Dropdown selection -->
+        <selectionsColumn name="ids" sortOrder="0">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="preserveSelectionsOnFilter" xsi:type="string">true</item>
+                    <item name="indexField" xsi:type="string">slide_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <!-- 
+        The name attribute should correspond to the column name of the database table 
+        see prymag_banners database table
+        -->
+        <column name="slide_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                </item>
+            </argument>
+        </column>
+        <column name="title">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Title</item>
+                </item>
+            </argument>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Created</item>
+                </item>
+            </argument>
+        </column>
+        <column name="updated_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Updated</item>
+                </item>
+            </argument>
+        </column>
+        
+
+
+    </columns>
+</listing>

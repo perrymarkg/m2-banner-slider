@@ -21,7 +21,6 @@ class Save extends \Magento\Backend\App\Action {
         $this->dataPersistor = $dataPersistor;
         $this->imageUploader = $imageUploader;
         parent::__construct($context);
-        
     }
     /**
      * following save function of Magento\Cms\Controller\Adminhtml\Block\Save
@@ -74,7 +73,7 @@ class Save extends \Magento\Backend\App\Action {
             } catch (LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addException($e, __('Something went wrong while saving the slide image.'));
+                $this->messageManager->addException($e, __('Something went wrong while saving the slide.'));
             }
 
 

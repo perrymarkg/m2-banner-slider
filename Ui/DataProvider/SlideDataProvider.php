@@ -4,7 +4,6 @@ namespace Prymag\BannerSlider\Ui\DataProvider;
 
 use Prymag\BannerSlider\Model\ResourceModel\Slides\CollectionFactory;
 use Magento\Framework\App\Request\DataPersistorInterface;
-use Magento\Framework\App\ObjectManager;
 use \Magento\Store\Model\StoreManagerInterface;
 
 use Magento\Framework\App\Filesystem\DirectoryList;

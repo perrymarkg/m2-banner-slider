@@ -34,6 +34,7 @@ class AddSlides implements \Magento\Ui\DataProvider\Modifier\ModifierInterface {
                         'sortOrder' => 50,
                         'collapsible' => true,
                         'componentType' => 'fieldset',
+                        'dataScope' => ''
                     ]
                 ]
             ],
@@ -101,9 +102,11 @@ class AddSlides implements \Magento\Ui\DataProvider\Modifier\ModifierInterface {
                                     'config' => [
                                         'autoRender' => false,
                                         'componentType' => 'insertListing',
-                                        'dataScope' => 'slides.banner_slides_dynamic_row',
-                                        'externalProvider' => 'slides_listing.slide_data_source', // name of the datasource for the listing, see view/adminhtml/ui_component. Read notes on file.
-                                        'selectionsProvider' => 'slides_listing.slide_data_source.prymag_slide_columns.ids', // the column id selection on the
+                                        // This is where the insertListing will be adding it's selected content in the dataSource
+                                        // it is adding it as data.dataScope, in this case data.slides_listing.
+                                        'dataScope' => 'slides_listing',
+                                        'externalProvider' => 'slides_listing.slides_listing.slide_data_source', // name of the datasource for the listing, see view/adminhtml/ui_component. Read notes on file.
+                                        'selectionsProvider' => 'slides_listing.slides_listing.prymag_slide_columns.ids', // the column id selection on the
                                         'ns' => 'slides_listing', // the namespace
                                         'render_url' => $this->urlBuilder->getUrl('mui/index/render'),
                                         'realTimeLink' => true,
@@ -119,21 +122,8 @@ class AddSlides implements \Magento\Ui\DataProvider\Modifier\ModifierInterface {
                         ]
                     ]
                 ], // End banner_slides_modal
-                'banner_slides_test_row' => [
-                    'arguments' => [
-                        'data' => [
-                            'config' => [
-                                'additionalClasses' => 'admin__field-wide',
-                                'formElement' => 'container',
-                                'componentType' => 'container',
-                                'label' => false,
-                                'template' => 'ui/form/components/complex',
-                                'content' => 'Test Content'
-                            ]
-                        ]
-                    ],
-                ],
-                'banner_slides_dynamic_row' => [ // this is where the data from modal will be passed to
+                
+                'slides_listing' => [ // this is where the data from modal will be passed to
                     'arguments' => [
                         'data' => [ // This will build the main table header
                             'config' => [
@@ -148,13 +138,15 @@ class AddSlides implements \Magento\Ui\DataProvider\Modifier\ModifierInterface {
                                 'addButton' => false,
                                 'recordTemplate' => 'record', // default to record
                                 // dataScope = is where dynamicRows will reference it's content from the data source
-                                // it will read it as dataScope.parentName, so in this case will read as "slides.banner_slides_dynamic_row"
-                                // in the dataProvider make sure to add ['slides']['banner_slides_dynamic_row'] in the data. 
-                                // see Prymag\BannerSlider\Ui\DataProvider\BannerDataProvider::getData() commented code dummy on how to add the data
+                                // it will read it as dataScope.parentName, so in this case will read as "slides.slides_listing"
+                                // in the dataProvider php file make sure to add ['slides']['slides_listing'] that contains the slide data. 
+                                // see Prymag\BannerSlider\Ui\DataProvider\BannerDataProvider::getData() commented code dummy on how to add/format the data
                                 // Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Related is using "data.links" instead of direct reference, tried it here but not working. Why????
                                 'dataScope' => 'slides', // 
                                 'deleteButtonLabel' => __('Remove'),
-                                'dataProvider' => 'slides_listing',
+                                // the field in the datasource where the insertListing component is adding it's content
+                                // check the dataSource for more info. banner_form.banner_form_data_source
+                                'dataProvider' => 'data.slides_listing',
                                 'map' => [
                                     'id' => 'slide_id',
                                     'title' => 'title',

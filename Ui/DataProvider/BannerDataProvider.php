@@ -57,20 +57,20 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
         }
 
         // Dummy data format
-        
-        $this->loadedData[$banner->getId()]['slides']['banner_slides_dynamic_row'] = array(
+        /* 
+        $this->loadedData[$banner->getId()]['slides']['slides_listing'] = array(
             array(
-                'id' => '1',
+                'id' => '55',
                 'title' => 'Test Title',
                 'position' => '0'
             ),
             array(
-                'id' => '2',
+                'id' => '26 ',
                 'title' => 'Test Title 2',
                 'position' => '0'
             )
-        );
-       
+        ); */
+      
 
         return $this->loadedData;
     }

@@ -20,8 +20,8 @@ class Save extends \Magento\Backend\App\Action {
         $resultRedirect = $this->resultRedirectFactory->create();
         
         $data = $this->getRequest()->getPostValue();
-        var_dump($data);
-        die();
+        /* var_dump($data);
+        die(); */
         if ($data) {
 
             $id = $this->getRequest()->getParam('banner_id');

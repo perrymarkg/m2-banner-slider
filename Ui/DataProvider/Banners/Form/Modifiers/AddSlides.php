@@ -32,7 +32,7 @@ class AddSlides implements \Magento\Ui\DataProvider\Modifier\ModifierInterface {
                     'config' => [
                         'label' => __('Banner Slides'),
                         'sortOrder' => 50,
-                        'collapsible' => true,
+                        'collapsible' => false,
                         'componentType' => 'fieldset',
                         'dataScope' => ''
                     ]
@@ -130,8 +130,8 @@ class AddSlides implements \Magento\Ui\DataProvider\Modifier\ModifierInterface {
                                 'additionalClasses' => 'admin__field-wide',
                                 'componentType' => DynamicRows::NAME,
                                 'label' => null,
-                                'columnsHeader' => true,
-                                'columnsHeaderAfterRender' => false,
+                                'columnsHeader' => false,
+                                'columnsHeaderAfterRender' => true,
                                 'renderDefaultRecord' => false,
                                 'template' => 'ui/dynamic-rows/templates/grid',
                                 'component' => 'Magento_Ui/js/dynamic-rows/dynamic-rows-grid',

@@ -33,8 +33,9 @@ class Banners extends \Magento\Framework\Model\AbstractModel implements Identity
         return $values;
     }
 
-   
-
-    
+    public function getBannerData(){
+        $data = $this->getData();
+        return $data;
+    } 
 
 }

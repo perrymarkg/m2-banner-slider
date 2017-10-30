@@ -3,8 +3,10 @@
 namespace Prymag\BannerSlider\Ui\DataProvider;
 
 use Prymag\BannerSlider\Model\ResourceModel\Banners\CollectionFactory;
+use Prymag\BannerSlider\Model\BannersFactory;
 use \Magento\Ui\DataProvider\Modifier\PoolInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\App\RequestInterface;
 
 class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
 
@@ -13,6 +15,10 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
     protected $loadedData;
 
     protected $dataPersistor;
+
+    protected $request;
+
+    protected $bannersFactory;
     
     public function __construct(
         $name,
@@ -21,12 +27,16 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
         CollectionFactory $bannersCollectionFactory,
         DataPersistorInterface $dataPersistor,
         PoolInterface $pool,
+        RequestInterface $request,
+        BannersFactory $bannersFactory,
         array $meta = [],
         array $data = []
     ) {
-        $this->collection = $bannersCollectionFactory->create();
+        $this->collection = $bannersCollectionFactory->create(); // Collection seems to be required, point it to the appropriate collection
+        $this->bannersFactory = $bannersFactory->create();
         $this->dataPersistor = $dataPersistor;
         $this->pool = $pool; // This will be injected via etc/adminhtml/di.xml
+        $this->request = $request; // To access request from the dataProvider
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         
     }
@@ -35,25 +45,40 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
      * {@inheritdoc}
      */
     public function getData()
-    {
-                
+    {   
         if (isset($this->loadedData)) {
             return $this->loadedData;
         }
 
-        $items = $this->collection->getItems();
+        /*
+        // This is another way of getting the data.
+        $bannerId = $this->request->getParam( $this->requestFieldName );
+        if( $bannerId ){
+            $banner = $this->bannersFactory->load( $bannerId );
+            $this->loadedData[$bannerId] = $banner->getData();
+        }
+        */
 
+        $items = $this->collection->getItems();
+                
+        // This does not make sense at first, but it seems that $this->collection->getItems() get's a single item from the collection based on the requestFieldName
+        // try throw new \Exception( count($items) ) and this will only show one item. so looks like this is the way to go
         foreach ($items as $banner) {
             // $banner->getId() will automatically map to the idfield based on what is defined in it's resource model, no need to use getBannerId(). ?
-            $this->loadedData[$banner->getId()] = $banner->getData();
-        }
+            $this->loadedData[$banner->getId()] = $banner->getBannerData();
+        } 
 
         $data = $this->dataPersistor->get('prymag_banner'); 
         if (!empty($data)) {
             $banner = $this->collection->getNewEmptyItem();
             $banner->setData($data);
-            $this->loadedData[$banner->getId()] = $banner->getData();
+            $this->loadedData[$banner->getId()] = $banner->getBannerData();
             $this->dataPersistor->clear('prymag_banner');
+        }
+
+        // add slides
+        if( isset($this->loadedData[ $this->request->getParam( $this->requestFieldName ) ] ) ){
+            
         }
 
         // Dummy data format

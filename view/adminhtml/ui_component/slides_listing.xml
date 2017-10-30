@@ -58,9 +58,9 @@
                     <item name="params" xsi:type="array">
                         <item name="filters_modifier" xsi:type="array"/>
                     </item>
-                    <item name="observers" xsi:type="array">
+                    <!-- <item name="observers" xsi:type="array">
                         <item name="filters" xsi:type="object">Magento\Catalog\Ui\Component\Listing\Filters</item>
-                    </item>
+                    </item> -->
                 </item>
             </argument>
             <settings>

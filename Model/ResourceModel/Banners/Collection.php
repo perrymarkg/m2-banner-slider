@@ -22,9 +22,11 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     }
 
     /**
-     * Get Banner Slides
-     *
-     * Joining tables 
+     * DO NOT DELETE
+     * Test code
+     * This works but will encounter ID already exists error.
+     * $_idFieldName or 'banner_id' value needs to be unique for each items queried.
+     * create separate collection for handling relationship see Prymag\BannerSlider\Model\ResourceModel\Banners\BannerSlidesCollection
      */
     public function getBannerSlides( $banner_id ){
         //$this->addFieldToFilter('banner_id', 'main_table.banner_id');

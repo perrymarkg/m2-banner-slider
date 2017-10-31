@@ -10,7 +10,7 @@ use Magento\Ui\Component\Form\Element\DataType\Text;
 use Magento\Framework\Phrase;
 use Magento\Ui\Component\DynamicRows;
 /**
- * This is injected via di.xml, see etc/adminhtml/di.xml
+ * This class is injected via di.xml, see etc/adminhtml/di.xml
  * see m2 doc about PHP modifiers
  * 
  */

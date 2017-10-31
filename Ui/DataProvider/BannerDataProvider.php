@@ -19,6 +19,8 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
     protected $request;
 
     protected $bannersFactory;
+
+    protected $bannersCollectionFactory;
     
     public function __construct(
         $name,
@@ -32,7 +34,11 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
         array $meta = [],
         array $data = []
     ) {
-        $this->collection = $bannersCollectionFactory->create(); // Collection seems to be required, point it to the appropriate collection
+        // Collection is required as definend in \Magento\Ui\DataProvider\AbstractDataProvider, point it to the appropriate collection
+        $this->collection = $bannersCollectionFactory->create(); 
+        // create a new collectionFactory to use later on.
+        $this->bannersCollectionFactory = $bannersCollectionFactory; 
+        // For testing use
         $this->bannersFactory = $bannersFactory->create();
         $this->dataPersistor = $dataPersistor;
         $this->pool = $pool; // This will be injected via etc/adminhtml/di.xml
@@ -49,7 +55,7 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
         if (isset($this->loadedData)) {
             return $this->loadedData;
         }
-
+        $banner_id = $this->request->getParam( $this->requestFieldName );
         /*
         // This is another way of getting the data.
         $bannerId = $this->request->getParam( $this->requestFieldName );
@@ -58,7 +64,7 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
             $this->loadedData[$bannerId] = $banner->getData();
         }
         */
-
+       
         $items = $this->collection->getItems();
                 
         // This does not make sense at first, but it seems that $this->collection->getItems() get's a single item from the collection based on the requestFieldName
@@ -76,9 +82,19 @@ class BannerDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider {
             $this->dataPersistor->clear('prymag_banner');
         }
 
+        
         // add slides
-        if( isset($this->loadedData[ $this->request->getParam( $this->requestFieldName ) ] ) ){
+        if( isset($this->loadedData[ $banner_id ] ) ){
+            $collectionFactory = $this->bannersCollectionFactory->create();
+            $collectionFactory->getBannerSlides( $banner_id );
             
+            ob_start();
+            foreach($collectionFactory as $i){
+                var_dump($i->getData());
+            }
+            $dump = ob_get_clean();
+            throw new \Exception( $dump ) ;
+            //throw new \Exception($collectionFactory->getBannerSlides( $banner_id ));
         }
 
         // Dummy data format

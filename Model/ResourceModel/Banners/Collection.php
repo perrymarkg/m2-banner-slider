@@ -20,5 +20,29 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
             'Prymag\BannerSlider\Model\ResourceModel\Banners'			
         );
     }
+
+    /**
+     * Get Banner Slides
+     *
+     * Joining tables 
+     */
+    public function getBannerSlides( $banner_id ){
+        //$this->addFieldToFilter('banner_id', 'main_table.banner_id');
+        
+        $this->addFieldToFilter('main_table.banner_id', $banner_id);
+        return $this->getSelect()
+        ->joinLeft(
+            ['relation' => $this->getTable('prymag_banner_slider_relation')],
+            'relation.banner_id = main_table.banner_id',
+            ['position']
+        )
+        ->joinLeft(
+            ['slides' => $this->getTable('prymag_slides')],
+            'slides.slide_id = relation.slide_id',
+            ['title','image']
+        );
+        
+        
+    }
     
 }
